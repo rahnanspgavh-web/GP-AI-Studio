@@ -1,0 +1,17 @@
+{
+  "google": {
+    "enabled": true,
+    "api_key": "",
+    "default_model": "gemini-2.5-pro"
+  },
+  "claude": {
+    "enabled": false,
+    "api_key": "",
+    "default_model": ""
+  },
+  "openai": {
+    "enabled": false,
+    "api_key": "",
+    "default_model": ""
+  }
+}
