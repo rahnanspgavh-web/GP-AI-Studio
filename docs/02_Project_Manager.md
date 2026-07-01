@@ -1,132 +1,116 @@
-# GP AI Studio - Project Manager
+# GP AI Studio - Project Manager Specification
 
-## Purpose
+---
 
-The Project Manager is responsible for creating, organizing and maintaining every GP AI Studio project.
+# Purpose
 
-Every title is treated as one independent project.
+The Project Manager is the heart of GP AI Studio.
 
-Examples
+It is responsible for creating, loading, validating, maintaining, backing up and tracking every project created inside GP AI Studio.
+
+Every content title is treated as one independent project.
+
+Examples:
 
 - Abhirami Anthathi
 - Thirukkural
-- Kandha Sashti Kavasam
-- Temple Tour
-- Health Topic
-- Food Recipe
+- Kandha Shashti Kavasam
+- Bhagavad Gita
+- Temple History
 
-Each project contains everything required to generate and publish content.
+Each title = One Project
 
 ---
 
-# Workspace
+# Workspace Location
 
-Projects are created inside
+The workspace location is configured by the Workspace Manager.
+
+Example:
 
 I:\GP-AI-Workspace
 
-under
+The Project Manager must NEVER hardcode a drive letter.
 
-01_Projects
-
-Never save generated files inside the GP AI Studio application folder.
+It always loads the workspace path from the Workspace Manager configuration.
 
 ---
 
-# Project Creation
+# Project Folder Structure
 
-When the user creates a project,
+When creating a new project, automatically generate:
 
-Example
+<Project Name>
 
-Abhirami Anthathi
+│
 
-Automatically create
+├──00_Project
 
-01_Projects
-    Abhirami Anthathi
+├──01_Research
 
-Inside create
+├──02_Scripts
 
-00_Project
-01_Research
-02_Scripts
-03_Prompts
-04_Images
-05_Videos
-06_Audio
-07_Subtitles
-08_Final
-09_Website
-10_YouTube
-11_Logs
-12_Backups
+│ ├──Tamil
 
----
+│ ├──English
 
-# 02_Scripts
+│ └──Hindi
 
-Automatically create
+├──03_Prompts
 
-Tamil
-English
-Hindi
+├──04_Images
 
-These language folders are available for every project.
+├──05_Videos
 
-Actual generation of Tamil, English and Hindi scripts happens only after user confirmation.
+├──06_Audio
+
+├──07_Subtitles
+
+├──08_Final
+
+├──09_Website
+
+├──10_YouTube
+
+├──11_Logs
+
+└──12_Backups
 
 ---
 
-# Metadata
+# Project Metadata
 
-Inside
-
-00_Project
-
-create
+Create
 
 project.json
 
+Contains:
+
+- Project ID
+- Project Name
+- Category
+- Created Date
+- Last Modified Date
+- Workspace Path
+- Project Version
+- Status
+- Current Module
+
+---
+
+# Progress Tracking
+
+Create
+
 progress.json
 
-settings.json
-
----
-
-# project.json
-
-Store
-
-Project Name
-
-Project Type
-
-Languages
-
-Created Date
-
-Modified Date
-
-Workspace Path
-
-Status
-
-Version
-
----
-
-# progress.json
-
-Track
+Tracks completion of
 
 Research
 
-Script
+Scripts
 
-Translation
-
-Prompt
+Prompts
 
 Images
 
@@ -142,136 +126,214 @@ Website
 
 YouTube
 
-Each item stores
-
-Pending
-
-Running
-
-Completed
-
-Failed
-
-Skipped
+Every engine updates this file automatically.
 
 ---
 
-# settings.json
+# Project Settings
 
-Store
+Create
+
+settings.json
+
+Contains
 
 Default Language
 
-Generate English
+Supported Languages
 
-Generate Hindi
+Video Resolution
 
-Script Provider
+Aspect Ratio
 
-Image Provider
+Video Duration
 
-Video Provider
+Image Style
 
-Audio Provider
+Voice Style
 
-Subtitle Provider
+Music Style
 
-Website Enabled
+Subtitle Style
 
-YouTube Enabled
+Output Format
 
 ---
 
-# Rules
+# Language Support
 
-Never overwrite an existing project.
+Supported Languages
 
-If a project already exists,
+Tamil
 
-ask the user whether to
+English
 
-Open Existing
+Hindi
 
-Duplicate
+Language selection applies to
 
-Cancel
+Research
 
-Never delete project data automatically.
+Scripts
 
-Always ask for confirmation.
+Prompts
+
+Images
+
+Videos
+
+Audio
+
+Subtitles
+
+The user chooses the language(s).
+
+---
+
+# Functions
+
+The Project Manager must support
+
+Create Project
+
+Open Project
+
+Rename Project
+
+Delete Project
+
+Archive Project
+
+Restore Project
+
+Duplicate Project
+
+Validate Project
+
+Repair Project
+
+Backup Project
+
+---
+
+# Validation
+
+Whenever a project is opened
+
+Verify folders
+
+Verify JSON files
+
+Create missing folders
+
+Create missing JSON files
+
+Repair corrupted configuration
 
 ---
 
 # Logging
 
-Every project maintains its own log folder.
-
-Store operation logs inside
+Store logs in
 
 11_Logs
 
+Log every important action
+
+Project Created
+
+Project Loaded
+
+Project Updated
+
+Research Completed
+
+Script Generated
+
+Image Generated
+
+Video Generated
+
+Audio Generated
+
+Published
+
+Backup Created
+
 ---
 
-# Backup
+# Future Integration
 
-Every project maintains
+Designed to work with
 
-12_Backups
+Workspace Manager
 
-Future versions will automatically create backups.
+API Manager
+
+Settings Manager
+
+Research Engine
+
+Script Engine
+
+Prompt Engine
+
+Image Engine
+
+Video Engine
+
+Audio Engine
+
+Subtitle Engine
+
+Video Composer
+
+Website Publisher
+
+YouTube Publisher
+
+Automation Scheduler
+
+Dashboard
 
 ---
 
-# Future Expansion
+# Design Rules
 
-Support
+Use pathlib
+
+No hardcoded paths
+
+Automatic recovery
+
+Automatic folder creation
+
+Automatic JSON creation
+
+Automatic progress tracking
+
+Support thousands of projects
+
+Safe for future expansion
+
+Maintain backward compatibility
+
+---
+
+# Future Enhancements
+
+Project Templates
 
 Project Search
 
-Project Rename
+Project Tags
 
-Project Archive
+Project Statistics
 
-Project Duplicate
+Automatic Backup Scheduling
 
 Project Export
 
 Project Import
 
-Project Statistics
-
-Project Resume
-
-Multi-language expansion
-
-Additional AI providers
-
-Cloud synchronization (optional)
-
----
-
-# Goal
-
-Every future engine
-
-Research
-
-Script
-
-Prompt
-
-Image
-
-Video
-
-Audio
-
-Subtitle
-
-Website
-
-YouTube
-
-must use the Project Manager instead of creating files independently.
-
-The Project Manager is the single source of truth for every GP AI Studio project.
+Cloud Synchronization (future)
