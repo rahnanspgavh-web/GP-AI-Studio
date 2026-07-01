@@ -11,7 +11,11 @@ from modules.project_manager.workspace_manager import (
     WorkspaceConfigurationError,
 )
 from modules.shared.logger import get_logger
-from config.workspace import DEFAULT_WORKSPACE_SUBDIRECTORIES, GP_AI_STUDIO_VERSION
+from config.workspace import (
+    DEFAULT_WORKSPACE_SUBDIRECTORIES,
+    GP_AI_STUDIO_VERSION,
+    WorkspaceConfig,
+)
 
 
 class WorkspaceManagerTests(unittest.TestCase):
@@ -20,6 +24,33 @@ class WorkspaceManagerTests(unittest.TestCase):
         self.addCleanup(self.temp_dir.cleanup)
         self.project_root = Path(self.temp_dir.name)
         self.config_path = self.project_root / "workspace.json"
+
+    def test_workspace_config_resolves_standard_folders(self) -> None:
+        workspace_path = self.project_root / "workspace"
+        workspace_path.mkdir(parents=True, exist_ok=True)
+        self.config_path.write_text(
+            json.dumps({"workspace_path": str(workspace_path.resolve())}),
+            encoding="utf-8",
+        )
+
+        config = WorkspaceConfig(project_root=self.project_root, workspace_config_path=self.config_path)
+
+        self.assertEqual(config.get_workspace(), workspace_path.resolve())
+        self.assertEqual(config.get_projects_folder(), workspace_path / "01_Projects")
+        self.assertEqual(config.get_logs_folder(), workspace_path / "07_Logs")
+        self.assertEqual(config.get_backups_folder(), workspace_path / "04_Backups")
+
+    def test_workspace_config_requires_existing_workspace(self) -> None:
+        missing_workspace = self.project_root / "missing-workspace"
+        self.config_path.write_text(
+            json.dumps({"workspace_path": str(missing_workspace.resolve())}),
+            encoding="utf-8",
+        )
+
+        config = WorkspaceConfig(project_root=self.project_root, workspace_config_path=self.config_path)
+
+        with self.assertRaises(FileNotFoundError):
+            config.get_workspace()
 
     def test_creates_workspace_when_configuration_is_missing(self) -> None:
         workspace_path = self.project_root / "workspace"
